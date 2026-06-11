@@ -6,12 +6,12 @@ A real-time 3D hand tracking website built with HTML, CSS, and JS using MediaPip
 
 * **Anatomical Tracking:** Measures X, Y, and Z spatial coordinates for 21 separate joint/landmarks on each hand.
 * **Color-coded:** Separates the:
-* wrist base (red)
-* pinky (purple)
-* thumb (orange)
-* index (yellow)
-* middle (green)
-* ring (blue)
+  * wrist base (red)
+  * pinky (purple)
+  * thumb (orange)
+  * index (yellow)
+  * middle (green)
+  * ring (blue)
 * fingers individually, whilst visually using distinct colors to match the data display with the camera mesh.
 * **Performance Overlay:** Displays a live frames-per-second (FPS) counter to monitor video feed.
 
