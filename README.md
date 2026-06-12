@@ -22,7 +22,7 @@ Try it directly in your browser:
   * **Right Eye:** purple
   * **Lips:** red
 * **FPS Counter:** A live speed tracker shows how many frames per second (FPS) the website is processing to make sure the video is smooth.
-* **(X, Y, Z):** numbers show the position of your hand and face as a percentage of the screen size, rather than measuring in inches or centimeters.
+* **(X, Y, Z) Coordinates:** The numbers show the position of your hand and face as a percentage of the screen size, rather than measuring in inches or centimeters.
 
 ## How to Use
 
