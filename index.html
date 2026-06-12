@@ -13,34 +13,31 @@
             background: #09090b;
             color: #fafafa;
             margin: 0;
-            padding: 10px;
-            overflow: hidden; /* Removes the scroll wheel entirely */
-            height: 100vh;
-            box-sizing: border-box;
+            padding: 15px;
+            overflow-x: hidden;
         }
 
         h2 {
             font-family: Arial, sans-serif;
-            margin: 0 0 8px 0;
-            font-size: 18px;
+            margin: 0 0 10px 0;
+            font-size: 20px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #a1a1aa;
-            text-align: center;
         }
 
         #control-panel {
             background: #121214;
-            padding: 8px 12px;
-            margin-bottom: 10px;
-            max-width: 960px;
+            padding: 12px;
+            margin-bottom: 15px;
+            max-width: 1280px;
             margin-left: auto;
             margin-right: auto;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 10px;
         }
 
         .control-row {
@@ -48,6 +45,7 @@
             flex-wrap: wrap;
             gap: 12px;
             align-items: center;
+            padding-bottom: 4px;
         }
 
         .control-label-group {
@@ -56,38 +54,38 @@
             text-transform: uppercase;
             color: #a1a1aa;
             letter-spacing: 1px;
-            min-width: 150px;
+            min-width: 160px;
         }
 
         .toggle-item {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
         }
 
         .toggle-item input[type="checkbox"] {
             accent-color: #fafafa;
             cursor: pointer;
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
+            border-radius: 0px;
         }
 
         #app-layout {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            max-width: 960px;
+            gap: 15px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
-        /* Optimized video tracking canvas to fit safely on standard viewport heights */
         #container {
             position: relative;
-            width: 960px;
-            height: 540px;
+            width: 1280px;
+            height: 720px;
             background: #000;
             overflow: hidden;
         }
@@ -97,103 +95,148 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 960px;
-            height: 540px;
+            width: 1280px;
+            height: 720px;
             transform: scaleX(-1);
         }
 
         #fps-counter {
             font-family: Arial, sans-serif;
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             z-index: 10;
             background: rgba(18, 18, 20, 0.85);
             color: #00ff00;
-            padding: 3px 6px;
+            padding: 4px 8px;
             font-size: 11px;
             font-weight: bold;
+            border-radius: 0px;
+            letter-spacing: 0.5px;
             pointer-events: none;
         }
 
-        .slim-data-bar {
+        /* Collapsible Section Containers */
+        .collapsible-panel {
             background: #121214;
-            padding: 6px 12px;
-            width: 960px;
+            width: 1280px;
             box-sizing: border-box;
             display: flex;
-            align-items: center;
-            gap: 15px;
-            min-height: 34px;
+            flex-direction: column;
+            padding: 12px;
         }
 
-        .panel-label {
-            font-size: 11px;
+        /* Header Bar containing title and arrow toggle */
+        .panel-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .hand-header {
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            color: #ffffff;
             font-weight: 700;
             text-transform: uppercase;
-            color: #ffffff;
             letter-spacing: 1px;
-            min-width: 150px;
-            flex-shrink: 0;
         }
 
-        .horizontal-content-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            align-items: center;
-            flex-grow: 1;
+        .arrow-icon {
+            font-size: 16px;
+            color: #a1a1aa;
+            transition: transform 0.2s ease;
         }
 
-        .status-msg-inline {
+        /* When active, rotates the caret down */
+        .collapsible-panel.expanded .arrow-icon {
+            transform: rotate(90deg);
+        }
+
+        /* Expansible content tray holding original high-fidelity graphics formats */
+        .panel-content-tray {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .collapsible-panel.expanded .panel-content-tray {
+            display: block;
+        }
+
+        /* Restoring your preferred original vertical grids inside the drop-downs */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .face-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .status-msg {
             font-family: Arial, sans-serif;
             color: #52525b;
-            font-size: 11px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin: 15px auto;
+            text-align: center;
+            width: 100%;
         }
 
-        .finger-pill {
+        .finger-group {
             background: #18181b;
-            padding: 2px 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 10px;
+            border-radius: 0px;
+            padding: 6px 8px;
         }
 
-        .finger-pill[data-group="Wrist Base"] { border: 1px solid #ef4444; }
-        .finger-pill[data-group="Thumb"] { border: 1px solid #f97316; }
-        .finger-pill[data-group="Index Finger"] { border: 1px solid #eab308; }
-        .finger-pill[data-group="Middle Finger"] { border: 1px solid #22c55e; }
-        .finger-pill[data-group="Ring Finger"] { border: 1px solid #3b82f6; }
-        .finger-pill[data-group="Pinky Finger"] { border: 1px solid #a855f7; }
+        .finger-group[data-group="Wrist Base"] { border: 1px solid #ef4444; }
+        .finger-group[data-group="Thumb"] { border: 1px solid #f97316; }
+        .finger-group[data-group="Index Finger"] { border: 1px solid #eab308; }
+        .finger-group[data-group="Middle Finger"] { border: 1px solid #22c55e; }
+        .finger-group[data-group="Ring Finger"] { border: 1px solid #3b82f6; }
+        .finger-group[data-group="Pinky Finger"] { border: 1px solid #a855f7; }
         
-        .finger-pill[data-group="Face-LeftEye"] { border: 1px solid #22d3ee; }
-        .finger-pill[data-group="Face-RightEye"] { border: 1px solid #c084fc; }
-        .finger-pill[data-group="Face-Lips"] { border: 1px solid #ef4444; }
+        .finger-group[data-group="Face-LeftEye"] { border: 1px solid #22d3ee; }
+        .finger-group[data-group="Face-RightEye"] { border: 1px solid #c084fc; }
+        .finger-group[data-group="Face-Lips"] { border: 1px solid #ef4444; }
 
-        .pill-title {
+        .finger-title {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
             font-weight: 700;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            font-size: 9px;
             letter-spacing: 0.5px;
         }
 
-        .finger-pill[data-group="Wrist Base"] .pill-title { color: #ef4444; }
-        .finger-pill[data-group="Thumb"] .pill-title { color: #f97316; }
-        .finger-pill[data-group="Index Finger"] .pill-title { color: #eab308; }
-        .finger-pill[data-group="Middle Finger"] .pill-title { color: #22c55e; }
-        .finger-pill[data-group="Ring Finger"] .pill-title { color: #3b82f6; }
-        .finger-pill[data-group="Pinky Finger"] .pill-title { color: #a855f7; }
+        .finger-group[data-group="Wrist Base"] .finger-title { color: #ef4444; }
+        .finger-group[data-group="Thumb"] .finger-title { color: #f97316; }
+        .finger-group[data-group="Index Finger"] .finger-title { color: #eab308; }
+        .finger-group[data-group="Middle Finger"] .finger-title { color: #22c55e; }
+        .finger-group[data-group="Ring Finger"] .finger-title { color: #3b82f6; }
+        .finger-group[data-group="Pinky Finger"] .finger-title { color: #a855f7; }
         
-        .finger-pill[data-group="Face-LeftEye"] .pill-title { color: #22d3ee; }
-        .finger-pill[data-group="Face-RightEye"] .pill-title { color: #c084fc; }
-        .finger-pill[data-group="Face-Lips"] .pill-title { color: #ef4444; }
+        .finger-group[data-group="Face-LeftEye"] .finger-title { color: #22d3ee; }
+        .finger-group[data-group="Face-RightEye"] .finger-title { color: #c084fc; }
+        .finger-group[data-group="Face-Lips"] .finger-title { color: #ef4444; }
 
-        .pill-coords {
+        .coord-line {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            line-height: 1.3;
+            color: #a1a1aa;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .coord-values {
             color: #fafafa;
-            font-family: monospace;
             font-weight: bold;
         }
     </style>
@@ -235,28 +278,43 @@
     <div id="app-layout">
         <div id="container">
             <div id="fps-counter">FPS: --</div>
-            <video id="webcam" width="960" height="540" autoplay playsinline></video>
-            <canvas id="output_canvas" width="960" height="540"></canvas>
+            <video id="webcam" width="1280" height="720" autoplay playsinline></video>
+            <canvas id="output_canvas" width="1280" height="720"></canvas>
         </div>
 
-        <div class="slim-data-bar" id="panel-a-container">
-            <div class="panel-label">Stream Panel A:</div>
-            <div id="left-data" class="horizontal-content-wrapper">
-                <div class="status-msg-inline">NO HAND DETECTED</div>
+        <div class="collapsible-panel expanded" id="panel-a-container">
+            <div class="panel-header-row" onclick="toggleCollapse(this)">
+                <div class="hand-header">Stream Panel A</div>
+                <div class="arrow-icon">▶</div>
+            </div>
+            <div class="panel-content-tray">
+                <div id="left-data" class="data-grid">
+                    <div class="status-msg">NO HAND DETECTED</div>
+                </div>
             </div>
         </div>
 
-        <div class="slim-data-bar" id="panel-b-container">
-            <div class="panel-label">Stream Panel B:</div>
-            <div id="right-data" class="horizontal-content-wrapper">
-                <div class="status-msg-inline">NO HAND DETECTED</div>
+        <div class="collapsible-panel expanded" id="panel-b-container">
+            <div class="panel-header-row" onclick="toggleCollapse(this)">
+                <div class="hand-header">Stream Panel B</div>
+                <div class="arrow-icon">▶</div>
+            </div>
+            <div class="panel-content-tray">
+                <div id="right-data" class="data-grid">
+                    <div class="status-msg">NO HAND DETECTED</div>
+                </div>
             </div>
         </div>
 
-        <div class="slim-data-bar" id="face-tracking-panel">
-            <div class="panel-label">Facial Coordinates:</div>
-            <div id="face-data" class="horizontal-content-wrapper">
-                <div class="status-msg-inline">NO FACE DETECTED</div>
+        <div class="collapsible-panel expanded" id="face-tracking-panel">
+            <div class="panel-header-row" onclick="toggleCollapse(this)">
+                <div class="hand-header">Facial Coordinates</div>
+                <div class="arrow-icon">▶</div>
+            </div>
+            <div class="panel-content-tray">
+                <div id="face-data" class="face-grid">
+                    <div class="status-msg" style="grid-column: span 3;">NO FACE DETECTED</div>
+                </div>
             </div>
         </div>
     </div>
@@ -324,6 +382,12 @@
         let frameCount = 0;
         let fps = 0;
 
+        // Interactive collapse controller function
+        function toggleCollapse(headerElement) {
+            const panel = headerElement.parentElement;
+            panel.classList.toggle('expanded');
+        }
+
         function updateFPS() {
             frameCount++;
             const now = performance.now();
@@ -387,41 +451,40 @@
             landmarkGroups.forEach(group => {
                 if (checkboxes[panelKey][group.key].checked) {
                     elementsLogged++;
-                    htmlContent += `<div class="finger-pill" data-group="${group.name}">`;
-                    htmlContent += `<span class="pill-title">${group.name}</span>`;
-                    
-                    let coordsStrings = [];
+                    htmlContent += `<div class="finger-group" data-group="${group.name}">`;
+                    htmlContent += `<div class="finger-title">${group.name}</div>`;
                     group.indices.forEach(i => {
                         const pt = landmarks[i];
-                        coordsStrings.push(`P${i}[${pt.x.toFixed(2)},${pt.y.toFixed(2)}]`);
+                        htmlContent += `
+                        <div class="coord-line">
+                            <span>P${i}:</span>
+                            <span class="coord-values">X:${pt.x.toFixed(2)} Y:${pt.y.toFixed(2)}</span>
+                        </div>`;
                     });
-                    
-                    htmlContent += `<span class="pill-coords">${coordsStrings.join(' ')}</span>`;
                     htmlContent += `</div>`;
                 }
             });
             
             if(elementsLogged === 0) {
-                htmlContent = `<div class="status-msg-inline">ALL MODULES MUTED</div>`;
+                htmlContent = `<div class="status-msg">ALL MODULES MUTED</div>`;
             }
-            
             return htmlContent;
         }
 
         function generateFaceHTML(faceLandmarks, layout, segmentTitle, dataGroupType, enabled) {
             if (!faceLandmarks || !enabled) return '';
-            let htmlContent = `<div class="finger-pill" data-group="${dataGroupType}">`;
-            htmlContent += `<span class="pill-title">${segmentTitle}</span>`;
-            
-            let coordsStrings = [];
+            let htmlContent = `<div class="finger-group" data-group="${dataGroupType}">`;
+            htmlContent += `<div class="finger-title">${segmentTitle}</div>`;
             layout.forEach(item => {
                 const pt = faceLandmarks[item.id];
                 if (pt) {
-                    coordsStrings.push(`${item.label}[${pt.x.toFixed(2)},${pt.y.toFixed(2)}]`);
+                    htmlContent += `
+                    <div class="coord-line">
+                        <span>${item.label}:</span>
+                        <span class="coord-values">X:${pt.x.toFixed(2)} Y:${pt.y.toFixed(2)}</span>
+                    </div>`;
                 }
             });
-            
-            htmlContent += `<span class="pill-coords">${coordsStrings.join(' ')}</span>`;
             htmlContent += `</div>`;
             return htmlContent;
         }
@@ -446,11 +509,11 @@
                 faceHTML += generateFaceHTML(results.faceLandmarks, lipsLayout, "Lips", "Face-Lips", checkboxes.lips.checked);
                 
                 if(!checkboxes.leftEye.checked && !checkboxes.rightEye.checked && !checkboxes.lips.checked) {
-                     faceHTML = `<div class="status-msg-inline">ALL FACIAL MODULES MUTED</div>`;
+                     faceHTML = `<div class="status-msg" style="grid-column: span 3;">ALL FACIAL MODULES MUTED</div>`;
                 }
                 faceData.innerHTML = faceHTML;
             } else {
-                faceData.innerHTML = `<div class="status-msg-inline">NO FACE DETECTED</div>`;
+                faceData.innerHTML = `<div class="status-msg" style="grid-column: span 3;">NO FACE DETECTED</div>`;
             }
 
             let currentFrameHands = [];
@@ -511,7 +574,7 @@
                 drawHandPoints(canvasCtx, assignedPanelA, 'panelA');
                 leftData.innerHTML = generateHandHTML(assignedPanelA, 'panelA');
             } else {
-                leftData.innerHTML = `<div class="status-msg-inline">NO HAND DETECTED</div>`;
+                leftData.innerHTML = `<div class="status-msg">NO HAND DETECTED</div>`;
             }
 
             if (assignedPanelB) {
@@ -523,7 +586,7 @@
                 drawHandPoints(canvasCtx, assignedPanelB, 'panelB');
                 rightData.innerHTML = generateHandHTML(assignedPanelB, 'panelB');
             } else {
-                rightData.innerHTML = `<div class="status-msg-inline">NO HAND DETECTED</div>`;
+                rightData.innerHTML = `<div class="status-msg">NO HAND DETECTED</div>`;
             }
 
             canvasCtx.restore();
@@ -546,8 +609,8 @@
             onFrame: async () => {
                 await holistic.send({ image: videoElement });
             },
-            width: 960,
-            height: 540
+            width: 1280,
+            height: 720
         });
         camera.start();
     </script>
