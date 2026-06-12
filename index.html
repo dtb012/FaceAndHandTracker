@@ -18,7 +18,7 @@
         }
 
         header {
-            max-width: 1280px;
+            max-width: 1560px;
             margin: 0 auto 10px auto;
             display: flex;
             justify-content: space-between;
@@ -36,12 +36,11 @@
             color: #a1a1aa;
         }
 
-        /* Scaled Up Gear Configuration Button */
         #open-panel-btn {
             background: transparent;
             border: none;
             color: #71717a;
-            font-size: 28px; /* Made bigger for easier access */
+            font-size: 28px;
             cursor: pointer;
             padding: 4px;
             line-height: 1;
@@ -134,20 +133,27 @@
             height: 13px;
         }
 
+        /* Dashboard Grid Layout containing everything within eye level */
         #app-layout {
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 10px;
-            max-width: 1280px;
+            max-width: 1560px;
             margin: 0 auto;
         }
 
-        /* Fixed aspect ratio styling container prevents horizontal stretching */
+        /* Upper Row containing Panel A, Video, Panel B */
+        .dashboard-upper-row {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 10px;
+            align-items: start;
+            width: 100%;
+        }
+
         #container {
             position: relative;
-            width: 960px;
-            max-width: 100%;
+            width: 100%;
             aspect-ratio: 16 / 9; 
             background: #000;
             overflow: hidden;
@@ -160,7 +166,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Keeps internal camera pixels perfectly proportioned */
+            object-fit: cover;
             transform: scaleX(-1);
         }
 
@@ -179,21 +185,24 @@
             pointer-events: none;
         }
 
-        /* Compact layout tracking blocks wrapper */
-        .original-data-grid-layout {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 1280px;
-            box-sizing: border-box;
-        }
-
         .data-panel-block {
             background: #121214;
             padding: 10px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            border: 1px solid #1c1c1f;
+        }
+
+        /* Specific style for wide lower facial panel block */
+        .wide-data-panel-block {
+            width: 100%;
+            background: #121214;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #1c1c1f;
         }
 
         .hand-header {
@@ -222,6 +231,22 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+        }
+
+        /* Horizontal flex row for facial data contents underneath */
+        .face-horizontal-row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .face-horizontal-row > .finger-group {
+            flex: 1;
+        }
+
+        .face-horizontal-row > .status-msg {
+            width: 100%;
         }
 
         .finger-group {
@@ -319,18 +344,18 @@
     </header>
 
     <div id="app-layout">
-        <div id="container">
-            <div id="fps-counter">FPS: --</div>
-            <video id="webcam" autoplay playsinline></video>
-            <canvas id="output_canvas"></canvas>
-        </div>
-
-        <div class="original-data-grid-layout">
+        <div class="dashboard-upper-row">
             <div class="data-panel-block">
                 <div class="hand-header">Stream Panel A</div>
                 <div id="left-data" class="finger-vertical-stack">
                     <div class="status-msg">NO HAND DETECTED</div>
                 </div>
+            </div>
+
+            <div id="container">
+                <div id="fps-counter">FPS: --</div>
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="output_canvas"></canvas>
             </div>
 
             <div class="data-panel-block">
@@ -339,12 +364,12 @@
                     <div class="status-msg">NO HAND DETECTED</div>
                 </div>
             </div>
+        </div>
 
-            <div class="data-panel-block">
-                <div class="hand-header">Facial Coordinates</div>
-                <div id="face-data" class="finger-vertical-stack">
-                    <div class="status-msg">NO FACE DETECTED</div>
-                </div>
+        <div class="wide-data-panel-block">
+            <div class="hand-header">Facial Coordinates</div>
+            <div id="face-data" class="face-horizontal-row">
+                <div class="status-msg">NO FACE DETECTED</div>
             </div>
         </div>
     </div>
@@ -353,6 +378,7 @@
         const videoElement = document.getElementById('webcam');
         const canvasElement = document.getElementById('output_canvas');
         const canvasCtx = canvasElement.getContext('2d');
+        const container = document.getElementById('container');
 
         const leftData = document.getElementById('left-data');
         const rightData = document.getElementById('right-data');
@@ -470,7 +496,6 @@
             }
         }
 
-        // Keep internal logic canvas sync parameters dynamic to aspect ratio matches
         function adjustCanvasSize() {
             canvasElement.width = container.clientWidth;
             canvasElement.height = container.clientHeight;
@@ -691,7 +716,6 @@
             height: 480
         });
         
-        // Initialize layout size syncing options
         adjustCanvasSize();
         camera.start();
     </script>
