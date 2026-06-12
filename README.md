@@ -1,34 +1,34 @@
 # Parkinson Face & Hand Tracker
 
-A real-time 3D landmark tracking dashboard built with HTML, CSS, and JavaScript using the MediaPipe Holistic framework. Designed to analyze and study Parkinson's disease micro-movements, this application maps high-fidelity facial tracking points and dual independent hand tracking streams using a standard webcam with zero extra hardware required.
+A website that tracks your face and hands in 3D using your webcam. It is built with HTML, CSS, and JavaScript using MediaPipe. It is designed to help study the small hand and face movements caused by Parkinson's disease. You do not need any special equipment to use it.
 
 ## Live Demo
-Try the dashboard directly in your browser:
+Try it directly in your browser:
 **https://christopherjun979-source.github.io/ParkinsonHandTrack/**
 
-## Key Features
+## Features
 
-* **Mirrored Real-Time Tracking Canvas:** Features a seamless, non-overlapping camera display automatically mirrored (`scaleX(-1)`) to offer an intuitive, natural reflection behavior for patients during tracking sessions.
-* **Granular Visibility Control Panel:** An integrated configuration dashboard allowing users to toggle individual anatomical segments on or off. Disabling a segment immediately halts canvas rendering and hides its respective text data box to maximize vertical screen real estate.
-* **Dual Independent Hand Pipelines (Stream Panels A & B):** Tracks up to two hands simultaneously, processing spatial X, Y, and Z coordinates across 21 independent joint locations per hand. The tracker features independent visibility controls for each stream and color-coded anatomical structures:
-  * **Wrist Base:** Highlighted in red
-  * **Thumb:** Highlighted in orange
-  * **Index Finger:** Highlighted in yellow
-  * **Middle Finger:** Highlighted in green
-  * **Ring Finger:** Highlighted in blue
-  * **Pinky Finger:** Highlighted in purple
-* **Targeted Facial Telemetry:** Monitors vital spatial landmarks for facial tremor and motor asymmetry observation:
-  * **Left Eye (Top/Bottom points):** Highlighted in cyan
-  * **Right Eye (Top/Bottom points):** Highlighted in purple
-  * **Lips Boundary (Top/Bottom/Left/Right points):** Highlighted in red
-* **Performance Diagnostic Overlay:** Features an integrated, live frames-per-second (FPS) counter to monitor processing efficiency and camera stream stability in real time.
+* **Mirrored Video Box:** The camera view acts like a normal mirror, making it natural and easy to use. The video box sits neatly in the center without blocking any data.
+* **On/Off Switches (Control Panel):** You can use the checkboxes at the top to turn tracking on or off for specific parts of the face or individual fingers. Turning a part off instantly hides its data box to keep the screen clean.
+* **Two Hand Tracking (Panels A & B):** Tracks both hands at the same time. It measures the X, Y, and Z positions for 21 points on each hand. Each finger has its own color:
+  * **Wrist Base:** Red
+  * **Thumb:** Orange
+  * **Index Finger:** Yellow
+  * **Middle Finger:** Green
+  * **Ring Finger:** Blue
+  * **Pinky Finger:** Purple
+* **Face Tracking:** Tracks important parts of the face to watch for movements or shaking:
+  * **Left Eye:** Cyan
+  * **Right Eye:** Purple
+  * **Lips:** Red
+* **FPS Counter:** A live speed tracker shows how many frames per second (FPS) the website is processing to make sure the video is smooth.
 
 ## How to Use
 
-1. Open the live demo link in any modern desktop web browser.
-2. Grant camera access permissions when prompted by your browser.
-3. Position your face and hands comfortably within the camera frame.
-4. Use the top configuration rows to selectively hide or show telemetry data fields based on your analysis needs.
+1. Click the live demo link in your web browser.
+2. Click "Allow" when the browser asks to use your camera.
+3. Hold up your hands and face to the camera to see the tracking numbers update live.
+4. Use the checkboxes at the top to hide or show any data you want.
 
 ---
-*Note: This project is an active work-in-progress designed for research and educational visualization, and it is continuously updated.*
+*Note: This project is a work-in-progress and is updated often.*
