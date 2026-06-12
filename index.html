@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>ParkinsonHandTrack</title>
+    <title>Parkinson Face & Hand Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
@@ -18,12 +18,56 @@
         }
 
         h2 {
-            margin: 0 0 15px 0;
+            font-family: Arial, sans-serif;
+            margin: 0 0 10px 0;
             font-size: 20px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #a1a1aa;
+        }
+
+        /* Rigid Control Panel Style */
+        #control-panel {
+            background: #121214;
+            padding: 12px;
+            margin-bottom: 15px;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        .control-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-label-group {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #a1a1aa;
+            letter-spacing: 1px;
+            margin-right: 5px;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .toggle-item input[type="checkbox"] {
+            accent-color: #fafafa;
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+            border-radius: 0px; /* Force rigid appearance where browser allows */
         }
 
         #app-layout {
@@ -35,7 +79,6 @@
             margin: 0 auto;
         }
 
-        /* Center structure holding video + bottom face telemetry */
         #center-block {
             display: flex;
             flex-direction: column;
@@ -44,6 +87,7 @@
             width: 640px;
         }
 
+        // ... Existing Layout Styles Remained Intact ...
         #container {
             position: relative;
             width: 640px;
@@ -60,6 +104,7 @@
         }
 
         #fps-counter {
+            font-family: Arial, sans-serif;
             position: absolute;
             top: 10px;
             left: 10px;
@@ -69,13 +114,13 @@
             padding: 4px 8px;
             font-size: 11px;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 0px;
             letter-spacing: 0.5px;
             pointer-events: none;
         }
 
-        /* Hand columns maximized with no scrollbars */
         .hand-column {
+            font-family: Arial, sans-serif;
             flex: 1;
             background: #121214;
             padding: 12px;
@@ -85,6 +130,7 @@
         }
 
         .hand-header {
+            font-family: Arial, sans-serif;
             font-size: 15px;
             color: #ffffff;
             font-weight: 700;
@@ -96,6 +142,7 @@
         }
 
         .status-msg {
+            font-family: Arial, sans-serif;
             color: #52525b;
             font-size: 13px;
             text-transform: uppercase;
@@ -110,8 +157,8 @@
             gap: 6px;
         }
 
-        /* Face Telemetry Panel directly below screen */
-        #face-telemetry-panel {
+        #face-tracking-panel {
+            font-family: Arial, sans-serif;
             background: #121214;
             padding: 12px;
             box-sizing: border-box;
@@ -127,7 +174,7 @@
 
         .finger-group {
             background: #18181b;
-            border-radius: 4px;
+            border-radius: 0px;
             padding: 6px 8px;
         }
 
@@ -143,6 +190,7 @@
         .finger-group[data-group="Face-Lips"] { border: 1px solid #ef4444; }
 
         .finger-title {
+            font-family: Arial, sans-serif;
             font-size: 10px;
             font-weight: 700;
             margin-bottom: 4px;
@@ -163,7 +211,7 @@
         .finger-group[data-group="Face-Lips"] .finger-title { color: #ef4444; }
 
         .coord-line {
-            font-family: monospace;
+            font-family: Arial, sans-serif;
             font-size: 10px;
             line-height: 1.3;
             color: #a1a1aa;
@@ -180,7 +228,24 @@
 
 <body>
 
-    <h2>ParkinsonHandTrack</h2>
+    <h2>Parkinson Face & Hand Tracker</h2>
+
+    <div id="control-panel">
+        <div class="control-section">
+            <span class="control-label-group">Face Modules:</span>
+            <label class="toggle-item" style="color: #22d3ee;"><input type="checkbox" id="show-lefteye" checked> Left Eye</label>
+            <label class="toggle-item" style="color: #c084fc;"><input type="checkbox" id="show-righteye" checked> Right Eye</label>
+            <label class="toggle-item" style="color: #ef4444;"><input type="checkbox" id="show-lips" checked> Lips</label>
+            
+            <span class="control-label-group" style="margin-left: 20px;">Hand Modules:</span>
+            <label class="toggle-item" style="color: #ef4444;"><input type="checkbox" id="show-wrist" checked> Wrist</label>
+            <label class="toggle-item" style="color: #f97316;"><input type="checkbox" id="show-thumb" checked> Thumb</label>
+            <label class="toggle-item" style="color: #eab308;"><input type="checkbox" id="show-index" checked> Index</label>
+            <label class="toggle-item" style="color: #22c55e;"><input type="checkbox" id="show-middle" checked> Middle</label>
+            <label class="toggle-item" style="color: #3b82f6;"><input type="checkbox" id="show-ring" checked> Ring</label>
+            <label class="toggle-item" style="color: #a855f7;"><input type="checkbox" id="show-pinky" checked> Pinky</label>
+        </div>
+    </div>
 
     <div id="app-layout">
         <div class="hand-column" id="left-column">
@@ -194,8 +259,8 @@
                 <canvas id="output_canvas" width="640" height="480"></canvas>
             </div>
 
-            <div id="face-telemetry-panel">
-                <div class="hand-header">Facial Coordinate Telemetry</div>
+            <div id="face-tracking-panel">
+                <div class="hand-header">Facial Coordinates</div>
                 <div id="face-data" class="face-grid">
                     <div class="status-msg" style="grid-column: span 3;">NO FACE DETECTED</div>
                 </div>
@@ -217,13 +282,26 @@
         const faceData = document.getElementById('face-data');
         const fpsCounter = document.getElementById('fps-counter');
 
+        // Target state reference binds
+        const checkboxes = {
+            leftEye: document.getElementById('show-lefteye'),
+            rightEye: document.getElementById('show-righteye'),
+            lips: document.getElementById('show-lips'),
+            wrist: document.getElementById('show-wrist'),
+            thumb: document.getElementById('show-thumb'),
+            index: document.getElementById('show-index'),
+            middle: document.getElementById('show-middle'),
+            ring: document.getElementById('show-ring'),
+            pinky: document.getElementById('show-pinky')
+        };
+
         const landmarkGroups = [
-            { name: "Wrist Base", indices: [0], color: '#ef4444' },
-            { name: "Thumb", indices: [1, 2, 3, 4], color: '#f97316' },
-            { name: "Index Finger", indices: [5, 6, 7, 8], color: '#eab308' },
-            { name: "Middle Finger", indices: [9, 10, 11, 12], color: '#22c55e' },
-            { name: "Ring Finger", indices: [13, 14, 15, 16], color: '#3b82f6' },
-            { name: "Pinky Finger", indices: [17, 18, 19, 20], color: '#a855f7' }
+            { name: "Wrist Base", indices: [0], color: '#ef4444', key: 'wrist' },
+            { name: "Thumb", indices: [1, 2, 3, 4], color: '#f97316', key: 'thumb' },
+            { name: "Index Finger", indices: [5, 6, 7, 8], color: '#eab308', key: 'index' },
+            { name: "Middle Finger", indices: [9, 10, 11, 12], color: '#22c55e', key: 'middle' },
+            { name: "Ring Finger", indices: [13, 14, 15, 16], color: '#3b82f6', key: 'ring' },
+            { name: "Pinky Finger", indices: [17, 18, 19, 20], color: '#a855f7', key: 'pinky' }
         ];
 
         const leftEyeLayout = [
@@ -259,8 +337,8 @@
             }
         }
 
-        function drawCustomConnections(ctx, landmarks, connections, color) {
-            if (!landmarks) return;
+        function drawCustomConnections(ctx, landmarks, connections, color, trackingKey) {
+            if (!landmarks || !checkboxes[trackingKey].checked) return;
             for (const connection of connections) {
                 const first = landmarks[connection[0]];
                 const second = landmarks[connection[1]];
@@ -278,19 +356,21 @@
         function drawHandPoints(ctx, landmarks) {
             if (!landmarks) return;
             landmarkGroups.forEach(group => {
-                group.indices.forEach(i => {
-                    if (landmarks[i]) {
-                        ctx.beginPath();
-                        ctx.arc(landmarks[i].x * canvasElement.width, landmarks[i].y * canvasElement.height, 4, 0, 2 * Math.PI);
-                        ctx.fillStyle = group.color;
-                        ctx.fill();
-                    }
-                });
+                if (checkboxes[group.key].checked) {
+                    group.indices.forEach(i => {
+                        if (landmarks[i]) {
+                            ctx.beginPath();
+                            ctx.arc(landmarks[i].x * canvasElement.width, landmarks[i].y * canvasElement.height, 4, 0, 2 * Math.PI);
+                            ctx.fillStyle = group.color;
+                            ctx.fill();
+                        }
+                    });
+                }
             });
         }
 
-        function drawFaceLayoutPoints(ctx, landmarks, layout, color) {
-            if (!landmarks) return;
+        function drawFaceLayoutPoints(ctx, landmarks, layout, color, enabled) {
+            if (!landmarks || !enabled) return;
             layout.forEach(item => {
                 const pt = landmarks[item.id];
                 if (pt) {
@@ -304,25 +384,35 @@
 
         function generateHandHTML(landmarks, panelTitle) {
             let htmlContent = `<div class="hand-header">${panelTitle}</div><div class="data-grid">`;
+            let elementsLogged = 0;
+            
             landmarkGroups.forEach(group => {
-                htmlContent += `<div class="finger-group" data-group="${group.name}">`;
-                htmlContent += `<div class="finger-title">${group.name}</div>`;
-                group.indices.forEach(i => {
-                    const pt = landmarks[i];
-                    htmlContent += `
-                    <div class="coord-line">
-                        <span>P${i}:</span>
-                        <span class="coord-values">X:${pt.x.toFixed(2)} Y:${pt.y.toFixed(2)} Z:${pt.z.toFixed(2)}</span>
-                    </div>`;
-                });
-                htmlContent += `</div>`;
+                if (checkboxes[group.key].checked) {
+                    elementsLogged++;
+                    htmlContent += `<div class="finger-group" data-group="${group.name}">`;
+                    htmlContent += `<div class="finger-title">${group.name}</div>`;
+                    group.indices.forEach(i => {
+                        const pt = landmarks[i];
+                        htmlContent += `
+                        <div class="coord-line">
+                            <span>P${i}:</span>
+                            <span class="coord-values">X:${pt.x.toFixed(2)} Y:${pt.y.toFixed(2)} Z:${pt.z.toFixed(2)}</span>
+                        </div>`;
+                    });
+                    htmlContent += `</div>`;
+                }
             });
+            
+            if(elementsLogged === 0) {
+                htmlContent += `<div class="status-msg">ALL MODULES MUTED</div>`;
+            }
+            
             htmlContent += `</div>`;
             return htmlContent;
         }
 
-        function generateFaceHTML(faceLandmarks, layout, segmentTitle, dataGroupType) {
-            if (!faceLandmarks) return '';
+        function generateFaceHTML(faceLandmarks, layout, segmentTitle, dataGroupType, enabled) {
+            if (!faceLandmarks || !enabled) return '';
             let htmlContent = `<div class="finger-group" data-group="${dataGroupType}">`;
             htmlContent += `<div class="finger-title">${segmentTitle}</div>`;
             layout.forEach(item => {
@@ -348,23 +438,26 @@
             canvasCtx.scale(-1, 1);
             canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-            // 1. Render Face Dot Overlays
+            // 1. Conditional Face Layout Render
             if (results.faceLandmarks) {
-                drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, leftEyeLayout, '#22d3ee');
-                drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, rightEyeLayout, '#c084fc');
-                drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, lipsLayout, '#ef4444');
+                drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, leftEyeLayout, '#22d3ee', checkboxes.leftEye.checked);
+                drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, rightEyeLayout, '#c084fc', checkboxes.rightEye.checked);
+                drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, lipsLayout, '#ef4444', checkboxes.lips.checked);
 
-                // Render Under-Screen Face Modules
                 let faceHTML = "";
-                faceHTML += generateFaceHTML(results.faceLandmarks, leftEyeLayout, "Your Left Eye (Cyan)", "Face-LeftEye");
-                faceHTML += generateFaceHTML(results.faceLandmarks, rightEyeLayout, "Your Right Eye (Purple)", "Face-RightEye");
-                faceHTML += generateFaceHTML(results.faceLandmarks, lipsLayout, "Lips Coordinates (Red)", "Face-Lips");
+                faceHTML += generateFaceHTML(results.faceLandmarks, leftEyeLayout, "Your Left Eye (Cyan)", "Face-LeftEye", checkboxes.leftEye.checked);
+                faceHTML += generateFaceHTML(results.faceLandmarks, rightEyeLayout, "Your Right Eye (Purple)", "Face-RightEye", checkboxes.rightEye.checked);
+                faceHTML += generateFaceHTML(results.faceLandmarks, lipsLayout, "Lips Coordinates (Red)", "Face-Lips", checkboxes.lips.checked);
+                
+                if(!checkboxes.leftEye.checked && !checkboxes.rightEye.checked && !checkboxes.lips.checked) {
+                     faceHTML = `<div class="status-msg" style="grid-column: span 3;">ALL FACIAL MODULES MUTED</div>`;
+                }
                 faceData.innerHTML = faceHTML;
             } else {
                 faceData.innerHTML = `<div class="status-msg" style="grid-column: span 3;">NO FACE DETECTED</div>`;
             }
 
-            // 2. Hand Sorting & Mapping
+            // 2. Hand Sorting & Context Pipeline Mapping
             let currentFrameHands = [];
             if (results.leftHandLandmarks) currentFrameHands.push(results.leftHandLandmarks);
             if (results.rightHandLandmarks) currentFrameHands.push(results.rightHandLandmarks);
@@ -414,26 +507,26 @@
                 }
             }
 
-            // Render Hand Panel A
+            // Render Hand Panel A Skeletons safely matching toggle profiles
             if (assignedPanelA) {
-                drawCustomConnections(canvasCtx, assignedPanelA, [[0, 1], [1, 2], [2, 3], [3, 4]], '#f97316');
-                drawCustomConnections(canvasCtx, assignedPanelA, [[0, 5], [5, 6], [6, 7], [7, 8]], '#eab308');
-                drawCustomConnections(canvasCtx, assignedPanelA, [[9, 10], [10, 11], [11, 12], [0, 9]], '#22c55e');
-                drawCustomConnections(canvasCtx, assignedPanelA, [[13, 14], [14, 15], [15, 16], [0, 13]], '#3b82f6');
-                drawCustomConnections(canvasCtx, assignedPanelA, [[17, 18], [18, 19], [19, 20], [0, 17]], '#a855f7');
+                drawCustomConnections(canvasCtx, assignedPanelA, [[0, 1], [1, 2], [2, 3], [3, 4]], '#f97316', 'thumb');
+                drawCustomConnections(canvasCtx, assignedPanelA, [[0, 5], [5, 6], [6, 7], [7, 8]], '#eab308', 'index');
+                drawCustomConnections(canvasCtx, assignedPanelA, [[9, 10], [10, 11], [11, 12], [0, 9]], '#22c55e', 'middle');
+                drawCustomConnections(canvasCtx, assignedPanelA, [[13, 14], [14, 15], [15, 16], [0, 13]], '#3b82f6', 'ring');
+                drawCustomConnections(canvasCtx, assignedPanelA, [[17, 18], [18, 19], [19, 20], [0, 17]], '#a855f7', 'pinky');
                 drawHandPoints(canvasCtx, assignedPanelA);
                 leftData.innerHTML = generateHandHTML(assignedPanelA, "Stream Panel A");
             } else {
                 leftData.innerHTML = `<div class="hand-header">Stream Panel A</div><div class="status-msg">NO HAND DETECTED</div>`;
             }
 
-            // Render Hand Panel B
+            // Render Hand Panel B Skeletons safely matching toggle profiles
             if (assignedPanelB) {
-                drawCustomConnections(canvasCtx, assignedPanelB, [[0, 1], [1, 2], [2, 3], [3, 4]], '#f97316');
-                drawCustomConnections(canvasCtx, assignedPanelB, [[0, 5], [5, 6], [6, 7], [7, 8]], '#eab308');
-                drawCustomConnections(canvasCtx, assignedPanelB, [[9, 10], [10, 11], [11, 12], [0, 9]], '#22c55e');
-                drawCustomConnections(canvasCtx, assignedPanelB, [[13, 14], [14, 15], [15, 16], [0, 13]], '#3b82f6');
-                drawCustomConnections(canvasCtx, assignedPanelB, [[17, 18], [18, 19], [19, 20], [0, 17]], '#a855f7');
+                drawCustomConnections(canvasCtx, assignedPanelB, [[0, 1], [1, 2], [2, 3], [3, 4]], '#f97316', 'thumb');
+                drawCustomConnections(canvasCtx, assignedPanelB, [[0, 5], [5, 6], [6, 7], [7, 8]], '#eab308', 'index');
+                drawCustomConnections(canvasCtx, assignedPanelB, [[9, 10], [10, 11], [11, 12], [0, 9]], '#22c55e', 'middle');
+                drawCustomConnections(canvasCtx, assignedPanelB, [[13, 14], [14, 15], [15, 16], [0, 13]], '#3b82f6', 'ring');
+                drawCustomConnections(canvasCtx, assignedPanelB, [[17, 18], [18, 19], [19, 20], [0, 17]], '#a855f7', 'pinky');
                 drawHandPoints(canvasCtx, assignedPanelB);
                 rightData.innerHTML = generateHandHTML(assignedPanelB, "Stream Panel B");
             } else {
