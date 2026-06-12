@@ -1,6 +1,6 @@
 # Parkinson Face & Hand Tracker
 
-A website that tracks your face and hands in 3D using your webcam. It is built with HTML, CSS, and JavaScript using MediaPipe. It is designed to help study the small hand and face movements caused by Parkinson's disease. You do not need any special equipment to use it.
+A website that tracks your face and hands in 3D using your webcam. It is built with HTML, CSS, and JavaScript using MediaPipe. The overall goal is for that it may help studying the small hand and face movements caused by Parkinson's disease. You do not need any special equipment to use it.
 
 ## Live Demo
 Try it directly in your browser:
@@ -22,6 +22,7 @@ Try it directly in your browser:
   * **Right Eye:** purple
   * **Lips:** red
 * **FPS Counter:** A live speed tracker shows how many frames per second (FPS) the website is processing to make sure the video is smooth.
+* **The X, Y, and Z numbers show the position of your hand and face as a percentage of the screen size, rather than measuring in inches or centimeters.
 
 ## How to Use
 
