@@ -9,7 +9,7 @@ Try the live application directly in your browser:
 ## Dashboard Features
 
 * **Balanced Center-Video Layout:** The video feed is locked to a non-distorted, standard 16:9 aspect ratio and centered on the screen. The feed is mirrored horizontally to feel natural to the user.
-* **Gear Configuration Menu ⚙️:** Located discreetly in the top-right corner of the interface, clicking the gray gear icon toggles a floating, draggable Modules Selection panel. This panel allows you to selectively toggle data tracking loops on or off to optimize performance and screen space.
+* **Gear Configuration Menu ⚙️:** Located in the top-right corner of the interface, clicking the gray gear icon toggles a floating, draggable Modules Selection panel. This panel allows you to selectively toggle data tracking loops on or off to optimize performance and screen space.
 * **Dual-Hand Tracking (Stream Panels A & B):** Pinpoints and separates data for both hands simultaneously across 21 unique skeletal landmarks. To ensure instant data tracking readability, each finger cluster is color-coded:
   * **Wrist Base:** red
   * **Thumb:** orange
