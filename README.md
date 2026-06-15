@@ -6,7 +6,7 @@ A web-based dashboard that tracks your facial features and hands in real-time us
 Try the live application directly in your browser: 
 
 **[https://christopherjun979-source.github.io/FaceAndHandTracker/
-](https://christopherjun979-source.github.io/FaceAndHandTracker/))**
+](https://christopherjun979-source.github.io/FaceAndHandTracker/)**
 
 ## Dashboard Features
 
