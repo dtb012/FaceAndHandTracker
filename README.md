@@ -1,4 +1,4 @@
-# Parkinson Face & Hand Tracker
+# Face & Hand Tracker
 
 A web-based dashboard that tracks your facial features and hands in real-time using a standard webcam. Built using HTML, CSS, and vanilla JavaScript powered by MediaPipe Holistic, this tool is designed to assist in studying the micro-movements, tremors, and rigidity associated with Parkinson's disease. No specialized hardware or depth sensors are required.
 
