@@ -14,10 +14,10 @@ const imuStream = fs.createWriteStream(path.join(dataDir, 'imu_readings.csv'));
 cameraStream.write("timestamp,source_panel,landmark_id,x,y,z\n");
 imuStream.write("timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z\n");
 
-console.log("🚀 Clinical Data Aggregator running on ws://localhost:8080");
+console.log("Clinical Data Aggregator running on ws://localhost:8080");
 
 wss.on('connection', (ws) => {
-    console.log("🔗 Device/Client connected to data pipeline.");
+    console.log("Device/Client connected to data pipeline.");
 
     ws.on('message', (message) => {
         try {
