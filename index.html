@@ -133,7 +133,32 @@
             height: 13px;
         }
 
-        /* Dashboard Grid Layout containing everything within eye level */
+        /* Clinical Data Acquisition Controls */
+        .rec-btn {
+            width: 100%;
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .rec-btn:hover { background: #b91c1c; }
+        .rec-btn.recording { background: #16a34a; }
+        .rec-btn.recording:hover { background: #15803d; }
+
+        #rec-status-indicator {
+            font-size: 10px;
+            color: #71717a;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* Dashboard Grid Layout */
         #app-layout {
             display: flex;
             flex-direction: column;
@@ -142,7 +167,6 @@
             margin: 0 auto;
         }
 
-        /* Upper Row containing Panel A, Video, Panel B */
         .dashboard-upper-row {
             display: grid;
             grid-template-columns: 280px 1fr 280px;
@@ -194,7 +218,6 @@
             border: 1px solid #1c1c1f;
         }
 
-        /* Specific style for wide lower facial panel block */
         .wide-data-panel-block {
             width: 100%;
             background: #121214;
@@ -233,7 +256,6 @@
             gap: 6px;
         }
 
-        /* Horizontal flex row for facial data contents underneath */
         .face-horizontal-row {
             display: flex;
             flex-direction: row;
@@ -241,26 +263,16 @@
             width: 100%;
         }
 
-        .face-horizontal-row > .finger-group {
-            flex: 1;
-        }
+        .face-horizontal-row > .finger-group { flex: 1; }
+        .face-horizontal-row > .status-msg { width: 100%; }
 
-        .face-horizontal-row > .status-msg {
-            width: 100%;
-        }
-
-        .finger-group {
-            background: #18181b;
-            padding: 6px;
-        }
-
+        .finger-group { background: #18181b; padding: 6px; }
         .finger-group[data-group="Wrist Base"] { border-left: 2px solid #ef4444; }
         .finger-group[data-group="Thumb"] { border-left: 2px solid #f97316; }
         .finger-group[data-group="Index Finger"] { border-left: 2px solid #eab308; }
         .finger-group[data-group="Middle Finger"] { border-left: 2px solid #22c55e; }
         .finger-group[data-group="Ring Finger"] { border-left: 2px solid #3b82f6; }
         .finger-group[data-group="Pinky Finger"] { border-left: 2px solid #a855f7; }
-        
         .finger-group[data-group="Face-LeftEye"] { border-left: 2px solid #22d3ee; }
         .finger-group[data-group="Face-RightEye"] { border-left: 2px solid #c084fc; }
         .finger-group[data-group="Face-Lips"] { border-left: 2px solid #ef4444; }
@@ -280,7 +292,6 @@
         .finger-group[data-group="Middle Finger"] .finger-title { color: #22c55e; }
         .finger-group[data-group="Ring Finger"] .finger-title { color: #3b82f6; }
         .finger-group[data-group="Pinky Finger"] .finger-title { color: #a855f7; }
-        
         .finger-group[data-group="Face-LeftEye"] .finger-title { color: #22d3ee; }
         .finger-group[data-group="Face-RightEye"] .finger-title { color: #c084fc; }
         .finger-group[data-group="Face-Lips"] .finger-title { color: #ef4444; }
@@ -294,10 +305,7 @@
             justify-content: space-between;
         }
 
-        .coord-values {
-            color: #fafafa;
-            font-weight: bold;
-        }
+        .coord-values { color: #fafafa; font-weight: bold; }
     </style>
 </head>
 
@@ -313,6 +321,12 @@
                 <span id="close-panel-btn" onclick="hidePanel()">✕</span>
             </div>
             <div id="control-panel-body">
+                <div class="control-row">
+                    <span class="control-label-group">Data Synchronization Pipeline</span>
+                    <button id="record-btn" class="rec-btn" onclick="toggleRecording()">Start Recording</button>
+                    <div id="rec-status-indicator">STATUS: IDLE</div>
+                </div>
+
                 <div class="control-row">
                     <span class="control-label-group">Face Modules:</span>
                     <label class="toggle-item" style="color: #22d3ee;"><input type="checkbox" id="show-lefteye" checked> Left Eye</label>
@@ -385,6 +399,13 @@
         const faceData = document.getElementById('face-data');
         const fpsCounter = document.getElementById('fps-counter');
         const controlPanel = document.getElementById('control-panel');
+        const recordBtn = document.getElementById('record-btn');
+        const recStatus = document.getElementById('rec-status-indicator');
+
+        // Recording Buffers
+        let isRecording = false;
+        let cameraFrameLog = [];
+        let imuSensorLog = []; // Populated via external calls/websockets asynchronously
 
         const checkboxes = {
             leftEye: document.getElementById('show-lefteye'),
@@ -417,22 +438,9 @@
             { name: "Pinky Finger", indices: [17, 18, 19, 20], color: '#a855f7', key: 'pinky' }
         ];
 
-        const leftEyeLayout = [
-            { id: 159, label: "Top" },
-            { id: 145, label: "Bottom" }
-        ];
-
-        const rightEyeLayout = [
-            { id: 386, label: "Top" },
-            { id: 374, label: "Bottom" }
-        ];
-
-        const lipsLayout = [
-            { id: 0,   label: "Top" },
-            { id: 17,  label: "Bottom" },
-            { id: 61,  label: "Left" },
-            { id: 291, label: "Right" }
-        ];
+        const leftEyeLayout = [{ id: 159, label: "Top" }, { id: 145, label: "Bottom" }];
+        const rightEyeLayout = [{ id: 386, label: "Top" }, { id: 374, label: "Bottom" }];
+        const lipsLayout = [{ id: 0, label: "Top" }, { id: 17, label: "Bottom" }, { id: 61, label: "Left" }, { id: 291, label: "Right" }];
 
         let activeTracks = { panelA: null, panelB: null };
         let lastFrameTime = performance.now();
@@ -441,11 +449,55 @@
 
         function hidePanel() { controlPanel.style.display = 'none'; }
         function togglePanel() { 
-            if(controlPanel.style.display === 'flex') {
-                controlPanel.style.display = 'none';
+            controlPanel.style.display = (controlPanel.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // Acquisition Engine Integration Link
+        function toggleRecording() {
+            if (!isRecording) {
+                // Start Recording Data Sequence
+                cameraFrameLog = [];
+                imuSensorLog = [];
+                isRecording = true;
+                recordBtn.innerText = "Stop & Export";
+                recordBtn.classList.add("recording");
+                recStatus.innerText = "STATUS: RECORDING FRAMES...";
+                recStatus.style.color = "#22c55e";
             } else {
-                controlPanel.style.display = 'flex';
+                // Halt Sequence & Trigger Local Offload Data Pipelines
+                isRecording = false;
+                recordBtn.innerText = "Start Recording";
+                recordBtn.classList.remove("recording");
+                recStatus.innerText = "STATUS: PROCESSING DOWNLOADS...";
+                recStatus.style.color = "#a1a1aa";
+                
+                exportAcquiredData(cameraFrameLog, "camera_tracking_frames.json");
+                if (imuSensorLog.length > 0) {
+                    exportAcquiredData(imuSensorLog, "imu_synchronized_sensor.json");
+                }
+                recStatus.innerText = "STATUS: IDLE";
             }
+        }
+
+        // Asynchronous Pipeline Hook to accept IMU data frames from external listeners safely
+        function logExternalIMUPacket(packetPayload) {
+            if (!isRecording) return;
+            imuSensorLog.push({
+                timestamp: performance.now(), // Shared high-precision coordination clock
+                data: packetPayload
+            });
+        }
+
+        function exportAcquiredData(dataLogArray, filename) {
+            const blob = new Blob([JSON.stringify(dataLogArray, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         dragElement(controlPanel);
@@ -453,17 +505,12 @@
         function dragElement(elmnt) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
             const header = document.getElementById(elmnt.id + "-header");
-            if (header) {
-                header.onmousedown = dragMouseDown;
-            } else {
-                elmnt.onmousedown = dragMouseDown;
-            }
+            if (header) { header.onmousedown = dragMouseDown; } else { elmnt.onmousedown = dragMouseDown; }
 
             function dragMouseDown(e) {
                 e = e || window.event;
                 e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
+                pos3 = e.clientX; pos4 = e.clientY;
                 document.onmouseup = closeDragElement;
                 document.onmousemove = elementDrag;
             }
@@ -471,18 +518,13 @@
             function elementDrag(e) {
                 e = e || window.event;
                 e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
+                pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+                pos3 = e.clientX; pos4 = e.clientY;
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
             }
 
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
+            function closeDragElement() { document.onmouseup = null; document.onmousemove = null; }
         }
 
         function updateFPS() {
@@ -593,6 +635,7 @@
         }
 
         function onResults(results) {
+            const frameTimestamp = performance.now(); // High-resolution clinical timestamp anchor
             updateFPS();
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
@@ -601,6 +644,7 @@
             canvasCtx.scale(-1, 1);
             canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
+            // Interface Updates & Track Rendering Assemblies
             if (results.faceLandmarks) {
                 drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, leftEyeLayout, '#22d3ee', checkboxes.leftEye.checked);
                 drawFaceLayoutPoints(canvasCtx, results.faceLandmarks, rightEyeLayout, '#c084fc', checkboxes.rightEye.checked);
@@ -627,8 +671,7 @@
             let assignedPanelB = null;
 
             if (currentFrameHands.length === 0) {
-                activeTracks.panelA = null;
-                activeTracks.panelB = null;
+                activeTracks.panelA = null; activeTracks.panelB = null;
             } else {
                 let handPool = [...currentFrameHands];
                 if (activeTracks.panelA) {
@@ -656,14 +699,11 @@
                 while (handPool.length > 0) {
                     let newHand = handPool.shift();
                     if (!assignedPanelA && !activeTracks.panelA && !assignedPanelB && (newHand[0].x > 0.5)) {
-                        assignedPanelA = newHand;
-                        activeTracks.panelA = { x: newHand[0].x, y: newHand[0].y };
+                        assignedPanelA = newHand; activeTracks.panelA = { x: newHand[0].x, y: newHand[0].y };
                     } else if (!assignedPanelB && !activeTracks.panelB) {
-                        assignedPanelB = newHand;
-                        activeTracks.panelB = { x: newHand[0].x, y: newHand[0].y };
+                        assignedPanelB = newHand; activeTracks.panelB = { x: newHand[0].x, y: newHand[0].y };
                     } else if (!assignedPanelA && !activeTracks.panelA) {
-                        assignedPanelA = newHand;
-                        activeTracks.panelA = { x: newHand[0].x, y: newHand[0].y };
+                        assignedPanelA = newHand; activeTracks.panelA = { x: newHand[0].x, y: newHand[0].y };
                     }
                 }
             }
@@ -676,9 +716,7 @@
                 drawCustomConnections(canvasCtx, assignedPanelA, [[17, 18], [18, 19], [19, 20], [0, 17]], '#a855f7', 'pinky', 'panelA');
                 drawHandPoints(canvasCtx, assignedPanelA, 'panelA');
                 leftData.innerHTML = generateHandHTML(assignedPanelA, 'panelA');
-            } else {
-                leftData.innerHTML = `<div class="status-msg">NO HAND DETECTED</div>`;
-            }
+            } else { leftData.innerHTML = `<div class="status-msg">NO HAND DETECTED</div>`; }
 
             if (assignedPanelB) {
                 drawCustomConnections(canvasCtx, assignedPanelB, [[0, 1], [1, 2], [2, 3], [3, 4]], '#f97316', 'thumb', 'panelB');
@@ -688,11 +726,19 @@
                 drawCustomConnections(canvasCtx, assignedPanelB, [[17, 18], [18, 19], [19, 20], [0, 17]], '#a855f7', 'pinky', 'panelB');
                 drawHandPoints(canvasCtx, assignedPanelB, 'panelB');
                 rightData.innerHTML = generateHandHTML(assignedPanelB, 'panelB');
-            } else {
-                rightData.innerHTML = `<div class="status-msg">NO HAND DETECTED</div>`;
-            }
+            } else { rightData.innerHTML = `<div class="status-msg">NO HAND DETECTED</div>`; }
 
             canvasCtx.restore();
+
+            // Recording Engine Buffer Appending
+            if (isRecording) {
+                cameraFrameLog.push({
+                    timestamp: frameTimestamp,
+                    face: results.faceLandmarks ? results.faceLandmarks : null,
+                    panelA: assignedPanelA ? assignedPanelA : null,
+                    panelB: assignedPanelB ? assignedPanelB : null
+                });
+            }
         }
 
         const holistic = new Holistic({
@@ -709,9 +755,7 @@
         holistic.onResults(onResults);
 
         const camera = new Camera(videoElement, {
-            onFrame: async () => {
-                await holistic.send({ image: videoElement });
-            },
+            onFrame: async () => { await holistic.send({ image: videoElement }); },
             width: 640,
             height: 480
         });
