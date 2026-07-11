@@ -1,4 +1,3 @@
-cat << 'EOF' > server.js
 const WebSocket = require('ws');
 const fs = require('fs');
 const path = require('path');
@@ -74,4 +73,3 @@ wss.on('connection', (ws) => {
 
     ws.on('close', () => console.log(" Pipeline disconnected. Streams preserved safety."));
 });
-EOF
